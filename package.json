@@ -16,8 +16,21 @@
       {
         "command": "ai.helloWorld",
         "title": "Hello World"
+      },
+      {
+        "command": "ai.openHunyuanLogin",
+        "title": "Open Hunyuan 3D Login",
+        "category": "AI"
       }
-    ]
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "aiStatusTree",
+          "name": "AI Status"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
