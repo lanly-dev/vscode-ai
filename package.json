@@ -3,6 +3,7 @@
   "displayName": "ai",
   "description": "ai",
   "version": "0.0.1",
+  "publisher": "lanly-dev",
   "engines": {
     "vscode": "^1.105.0"
   },
@@ -14,20 +15,26 @@
   "contributes": {
     "commands": [
       {
-        "command": "ai.helloWorld",
-        "title": "Hello World"
-      },
-      {
-        "command": "ai.openHunyuanLogin",
-        "title": "Open Hunyuan 3D Login",
+        "command": "ai.hunyuanLogin",
+        "title": "Hunyuan 3D Login",
+        "icon": "$(link)",
         "category": "AI"
       }
     ],
     "views": {
       "explorer": [
         {
-          "id": "aiStatusTree",
-          "name": "AI Status"
+          "id": "aiTreeView",
+          "name": "AI"
+        }
+      ]
+    },
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "ai.hunyuanLogin",
+          "when": "viewItem == ai.notLoggedIn",
+          "group": "inline"
         }
       ]
     }
