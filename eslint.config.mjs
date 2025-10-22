@@ -1,28 +1,33 @@
-import typescriptEslint from "@typescript-eslint/eslint-plugin";
-import tsParser from "@typescript-eslint/parser";
+import globals from 'globals'
 
-export default [{
-    files: ["**/*.ts"],
-}, {
-    plugins: {
-        "@typescript-eslint": typescriptEslint,
-    },
-
+export default [
+  { files: ['**/*.js'] },
+  { ignores: ['dist'] },
+  {
     languageOptions: {
-        parser: tsParser,
-        ecmaVersion: 2022,
-        sourceType: "module",
+      globals: {
+        ...globals.commonjs,
+        ...globals.node
+      },
+      ecmaVersion: 2022,
+      sourceType: 'module'
     },
-
     rules: {
-        "@typescript-eslint/naming-convention": ["warn", {
-            selector: "import",
-            format: ["camelCase", "PascalCase"],
-        }],
-
-        curly: "warn",
-        eqeqeq: "warn",
-        "no-throw-literal": "warn",
-        semi: "warn",
-    },
-}];
+      'comma-dangle': ['error', 'never'],
+      'eol-last': ['error', 'always'],
+      'no-throw-literal': 'warn',
+      'quote-props': ['error', 'as-needed'],
+      'constructor-super': 'warn',
+      'no-const-assign': 'warn',
+      'no-this-before-super': 'warn',
+      'no-undef': 'warn',
+      'no-unreachable': 'warn',
+      'no-unused-vars': 'warn',
+      'valid-typeof': 'warn',
+      curly: ['error', 'multi-or-nest'],
+      eqeqeq: 'error',
+      quotes: ['error', 'single', { allowTemplateLiterals: true }],
+      semi: ['error', 'never']
+    }
+  }
+]
