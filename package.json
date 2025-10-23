@@ -15,9 +15,15 @@
   "contributes": {
     "commands": [
       {
-        "command": "ai.hunyuanLogin",
+        "command": "ai.hunyuanLoginWebsite",
         "title": "Hunyuan 3D Login",
         "icon": "$(link)",
+        "category": "AI"
+      },
+      {
+        "command": "ai.hunyuanLoggingIn",
+        "title": "Hunyuan 3D Logging In...",
+        "icon": "$(key)",
         "category": "AI"
       }
     ],
@@ -32,7 +38,12 @@
     "menus": {
       "view/item/context": [
         {
-          "command": "ai.hunyuanLogin",
+          "command": "ai.hunyuanLoginWebsite",
+          "when": "viewItem == ai.notLoggedIn",
+          "group": "inline"
+        },
+        {
+          "command": "ai.hunyuanLoggingIn",
           "when": "viewItem == ai.notLoggedIn",
           "group": "inline"
         }

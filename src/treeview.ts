@@ -7,7 +7,7 @@ export class StatusTreeItem extends vscode.TreeItem {
     this.command = {
       command: 'ai.hunyuanLogin',
       title: 'Login',
-      tooltip: 'Open Hunyuan 3D Login',
+      tooltip: 'Open Hunyuan 3D Login'
     }
     this.description = 'Not Login'
     this.iconPath = new vscode.ThemeIcon('account')
