@@ -25,6 +25,12 @@
         "title": "Hunyuan 3D Logging In...",
         "icon": "$(key)",
         "category": "AI"
+      },
+      {
+        "command": "ai.query3DItems",
+        "title": "Query Hunyuan 3D Items",
+        "icon": "$(search)",
+        "category": "AI"
       }
     ],
     "views": {

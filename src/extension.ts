@@ -1,7 +1,10 @@
 import * as vscode from 'vscode'
 import { StatusTreeItem, StatusTreeDataProvider } from './treeview'
 import HyLogin from './HyLogin'
+import HyApi from './HyApi'
 export function activate(context: vscode.ExtensionContext) {
+	HyLogin.setContext(context)
+	// HyApi.setContext(context)
 
 	const d1 = vscode.commands.registerCommand('ai.hunyuanLoginWebsite', () => {
 		const panel = vscode.window.createWebviewPanel(
@@ -63,9 +66,18 @@ export function activate(context: vscode.ExtensionContext) {
 			vscode.window.showErrorMessage('❌ Hunyuan 3D Login failed. Please check your email and code.')
 
 	})
-	context.subscriptions.push(hunyuanLoggingIn)
 
-	context.subscriptions.push(statusTreeView, d1)
+	const query3DItemsCmd = vscode.commands.registerCommand('ai.query3DItems', async () => {
+		try {
+			const items = await HyApi.query3DItems(context)
+			vscode.window.showInformationMessage(`Fetched ${items.length} 3D items.`)
+		} catch (error) {
+			const errorMessage = error instanceof Error ? error.message : String(error)
+			vscode.window.showErrorMessage(`Error fetching 3D items: ${errorMessage}`)
+		}
+	})
+
+	context.subscriptions.push(hunyuanLoggingIn, statusTreeView, d1, query3DItemsCmd)
 }
 
 // This method is called when your extension is deactivated
