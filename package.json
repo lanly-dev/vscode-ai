@@ -15,21 +15,39 @@
   "contributes": {
     "commands": [
       {
-        "command": "ai.hunyuanLoginWebsite",
+        "command": "ai.loginWebsite",
         "title": "Hunyuan 3D Login",
         "icon": "$(link)",
         "category": "AI"
       },
       {
-        "command": "ai.hunyuanLoggingIn",
+        "command": "ai.loggingIn",
         "title": "Hunyuan 3D Logging In...",
         "icon": "$(key)",
         "category": "AI"
       },
       {
-        "command": "ai.query3DItems",
-        "title": "Query Hunyuan 3D Items",
+        "command": "ai.queryCreations",
+        "title": "Query Hunyuan creations",
         "icon": "$(search)",
+        "category": "AI"
+      },
+      {
+        "command": "ai.generate3DModel",
+        "title": "Generate 3D Model",
+        "icon": "$(rocket)",
+        "category": "AI"
+      },
+      {
+        "command": "ai.getUserInfo",
+        "title": "Get User Info",
+        "icon": "$(user)",
+        "category": "AI"
+      },
+      {
+        "command": "ai.getConfig",
+        "title": "Get Configuration",
+        "icon": "$(gear)",
         "category": "AI"
       }
     ],

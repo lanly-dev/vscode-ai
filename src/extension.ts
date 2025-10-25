@@ -4,9 +4,9 @@ import HyLogin from './HyLogin'
 import HyApi from './HyApi'
 export function activate(context: vscode.ExtensionContext) {
 	HyLogin.setContext(context)
-	// HyApi.setContext(context)
+	HyApi.setContext(context)
 
-	const d1 = vscode.commands.registerCommand('ai.hunyuanLoginWebsite', () => {
+	const dWebview = vscode.commands.registerCommand('ai.loginWebsite', () => {
 		const panel = vscode.window.createWebviewPanel(
 			'hunyuanLogin',
 			'Hunyuan Login',
@@ -32,13 +32,13 @@ export function activate(context: vscode.ExtensionContext) {
 	})
 
 	// Register the TreeView
-	const statusTreeView = vscode.window.createTreeView('aiTreeView', {
+	const dTreeView = vscode.window.createTreeView('aiTreeView', {
 		treeDataProvider: new StatusTreeDataProvider(),
 		showCollapseAll: false
 	})
 
 	// Command to prompt user for email and code
-	const hunyuanLoggingIn = vscode.commands.registerCommand('ai.hunyuanLoggingIn', async () => {
+	const dLoggingIn = vscode.commands.registerCommand('ai.loggingIn', async () => {
 		const email = await vscode.window.showInputBox({
 			prompt: 'Enter your email for Hunyuan 3D',
 			placeHolder: 'your@email.com',
@@ -58,16 +58,13 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 		if (!code) return
 		const success = await HyLogin.loginWithEmail(email, code)
-		if (success)
-			vscode.window.showInformationMessage('✅ Hunyuan 3D Login successful!')
-		else
-			vscode.window.showErrorMessage('❌ Hunyuan 3D Login failed. Please check your email and code.')
-
+		if (success) vscode.window.showInformationMessage('✅ Hunyuan 3D Login successful!')
+		else vscode.window.showErrorMessage('❌ Hunyuan 3D Login failed. Please check your email and code.')
 	})
 
-	const query3DItemsCmd = vscode.commands.registerCommand('ai.query3DItems', async () => {
+	const d1 = vscode.commands.registerCommand('ai.listCreations', async () => {
 		try {
-			const items = await HyApi.listCreations(context, { limit: 20, offset: 0, sceneTypeList: [] })
+			const items = await HyApi.listCreations({ limit: 20, offset: 0, sceneTypeList: [] })
 			vscode.window.showInformationMessage(`Fetched ${items.length} 3D items.`)
 		} catch (error) {
 			const errorMessage = error instanceof Error ? error.message : String(error)
@@ -75,7 +72,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	})
 
-	context.subscriptions.push(hunyuanLoggingIn, statusTreeView, d1, query3DItemsCmd)
+	context.subscriptions.push(dWebview, dLoggingIn, dTreeView, d1)
 }
 
 // This method is called when your extension is deactivated
