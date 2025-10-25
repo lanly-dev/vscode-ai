@@ -1,5 +1,5 @@
 import * as vscode from 'vscode'
-import { StatusTreeItem, StatusTreeDataProvider } from './treeview'
+import { StatusTreeDataProvider } from './treeview'
 import HyLogin from './HyLogin'
 import HyApi from './HyApi'
 export function activate(context: vscode.ExtensionContext) {
@@ -37,8 +37,6 @@ export function activate(context: vscode.ExtensionContext) {
 		showCollapseAll: false
 	})
 
-
-
 	// Command to prompt user for email and code
 	const hunyuanLoggingIn = vscode.commands.registerCommand('ai.hunyuanLoggingIn', async () => {
 		const email = await vscode.window.showInputBox({
@@ -69,7 +67,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const query3DItemsCmd = vscode.commands.registerCommand('ai.query3DItems', async () => {
 		try {
-			const items = await HyApi.query3DItems(context)
+			const items = await HyApi.listCreations(context, { limit: 20, offset: 0, sceneTypeList: [] })
 			vscode.window.showInformationMessage(`Fetched ${items.length} 3D items.`)
 		} catch (error) {
 			const errorMessage = error instanceof Error ? error.message : String(error)

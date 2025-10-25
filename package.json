@@ -37,7 +37,8 @@
       "explorer": [
         {
           "id": "aiTreeView",
-          "name": "AI"
+          "name": "AI",
+          "icon": "$(rocket)"
         }
       ]
     },

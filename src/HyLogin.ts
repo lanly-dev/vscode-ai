@@ -14,7 +14,7 @@ export default class HyLogin {
       Accept: 'application/json, text/plain, */*',
       'x-product': 'hunyuan3d',
       'x-source': 'web',
-      'trace-id': crypto.randomUUID(),
+      'trace-id': crypto.randomUUID()
     }
 
     try {
