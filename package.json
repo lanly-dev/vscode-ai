@@ -75,12 +75,12 @@
     "menus": {
       "view/item/context": [
         {
-          "command": "ai.hunyuanLoginWebsite",
+          "command": "ai.loginWebsite",
           "when": "viewItem == ai.notLoggedIn",
           "group": "inline"
         },
         {
-          "command": "ai.hunyuanLoggingIn",
+          "command": "ai.loggingIn",
           "when": "viewItem == ai.notLoggedIn",
           "group": "inline"
         }

@@ -45,12 +45,12 @@ export default class HyLogin {
         }
 
         // RESULT FROM BODY: {"isInCoolingPeriod":false,"token":"","userId":"","source":""}
-        // const reader = response.body?.getReader();
+        // const reader = response.body?.getReader()
         // let result = ''
         // while (reader) {
-        //   const { done, value } = await reader.read();
-        //   if (done) break;
-        //   result += new TextDecoder().decode(value);
+        //   const { done, value } = await reader.read()
+        //   if (done) break
+        //   result += new TextDecoder().decode(value)
         // }
         // console.log('Response body:', result)
 

@@ -66,12 +66,24 @@ export default class HyApi {
 
 		const url = 'https://3d.hunyuan.tencent.com/api/3d/creations/generations'
 		const headers = await makeHeaders(this.context)
+		console.log('Generating 3D model with params:', params)
 		const response = await fetch(url, { method: 'POST', headers, body: JSON.stringify(params) })
+		console.log('Response:', response)
+
+		const reader = response.body?.getReader()
+		let result = ''
+		while (reader) {
+			const { done, value } = await reader.read()
+			if (done) break
+			result += new TextDecoder().decode(value)
+		}
+		// {"id":"b972aad701d9c5a4903cc82a80510dbc","error":"参数不完整","message":"请求异常，签名验证失败:参数不完整"}
+		console.log('Response body:', result)
+
 		if (!response.ok) throw new Error(`Failed to generate 3D model: ${response.status}`)
 		return response.json()
 	}
 
-	// 6. Get Creation Details
 	static async getCreationDetails(creationsId: string): Promise<any> {
 		const url = `https://3d.hunyuan.tencent.com/api/3d/creations/detail?creationsId=${encodeURIComponent(creationsId)}`
 		const headers = await makeHeaders(this.context)
@@ -80,12 +92,7 @@ export default class HyApi {
 		return response.json()
 	}
 
-	// 7. List Creations
-	static async listCreations(params: {
-		limit: number,
-		offset: number,
-		sceneTypeList: string[]
-	}): Promise<any> {
+	static async listCreations(params: { limit: number, offset: number, sceneTypeList: string[] }): Promise<any> {
 		const url = 'https://3d.hunyuan.tencent.com/api/3d/creations/list'
 		const headers = await makeHeaders(this.context)
 		const response = await fetch(url, { method: 'POST', headers, body: JSON.stringify(params) })
