@@ -27,15 +27,9 @@
         "category": "AI"
       },
       {
-        "command": "ai.queryCreations",
-        "title": "Query Hunyuan creations",
-        "icon": "$(search)",
-        "category": "AI"
-      },
-      {
-        "command": "ai.generate3DModel",
-        "title": "Generate 3D Model",
-        "icon": "$(rocket)",
+        "command": "ai.getConfig",
+        "title": "Get Hunyuan Config",
+        "icon": "$(settings)",
         "category": "AI"
       },
       {
@@ -45,9 +39,27 @@
         "category": "AI"
       },
       {
-        "command": "ai.getConfig",
-        "title": "Get Configuration",
+        "command": "ai.getQuotaInfo",
+        "title": "Get Quota Info",
         "icon": "$(gear)",
+        "category": "AI"
+      },
+      {
+        "command": "ai.generate3DModel",
+        "title": "Generate 3D Model",
+        "icon": "$(rocket)",
+        "category": "AI"
+      },
+      {
+        "command": "ai.getCreationDetails",
+        "title": "Get Creation Details",
+        "icon": "$(file-code)",
+        "category": "AI"
+      },
+      {
+        "command": "ai.listCreations",
+        "title": "List Creations",
+        "icon": "$(list-unordered)",
         "category": "AI"
       }
     ],
