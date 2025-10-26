@@ -54,17 +54,25 @@ export default class HyApi {
 		modelType?: string,
 		count?: number,
 		enable_pbr?: boolean,
-		enableLowPoly?: boolean
+		enableLowPoly?: boolean,
+		faceCount?: number
 	}): Promise<any> {
 
-		params.style = params.style || ''
-		params.sceneType = params.sceneType || 'playGround3D-2.0'
-		params.modelType = params.modelType || 'modelCreationV2.5'
-		params.count = params.count || 1
-		params.enable_pbr = params.enable_pbr || true
-		params.enableLowPoly = params.enableLowPoly || false
+		// Style can be empty|cartoon
+		// modelType can be modelCreationV3.0|geometryV3.0
+		// faceCount 500000 to 15000000
+		params.sceneType = params.sceneType ?? 'playGround3D-2.0'
+		params.modelType = params.modelType ?? 'modelCreationV3.0'
+		params.count = params.count ?? 4
+		params.enable_pbr = params.enable_pbr ?? true
+		params.enableLowPoly = params.enableLowPoly ?? false
+		params.faceCount = params.faceCount ?? 1500000
 
-		const url = 'https://3d.hunyuan.tencent.com/api/3d/creations/generations'
+		const timestamp = Math.floor(Date.now() / 1000)
+		const nonce = Math.random().toString(36).substring(2, 18) // we can't bypass this X(
+		const sign = Math.random().toString(36).substring(2, 34) // we can't bypass this x(
+		const url = `https://3d.hunyuan.tencent.com/api/3d/creations/generations?timestamp=${timestamp}&nonce=${nonce}&sign=${sign}`
+		console.log('Generating 3D model with URL:', url)
 		const headers = await makeHeaders(this.context)
 		console.log('Generating 3D model with params:', params)
 		const response = await fetch(url, { method: 'POST', headers, body: JSON.stringify(params) })

@@ -96,7 +96,7 @@ export function activate(context: vscode.ExtensionContext) {
 		try {
 			const model = await HyApi.generate3DModel({
 				prompt: 'A futuristic cityscape with flying cars',
-				title: 'Futuristic City'
+				title: 'A futuristic cityscape with flying cars'
 			})
 			vscode.window.showInformationMessage(`3D Model generated: ${JSON.stringify(model)}`)
 		} catch (error) {
