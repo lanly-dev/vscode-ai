@@ -1,4 +1,5 @@
 import * as vscode from 'vscode'
+import { createHmac } from 'crypto'
 
 async function makeHeaders(context: vscode.ExtensionContext): Promise<Record<string, string>> {
 	const cookie = await context.secrets.get('hunyuan3d-cookie')
@@ -9,7 +10,9 @@ async function makeHeaders(context: vscode.ExtensionContext): Promise<Record<str
 		'Content-Type': 'application/json',
 		'x-product': 'hunyuan3d',
 		'x-source': 'web',
-		'trace-id': crypto.randomUUID()
+		'trace-id': crypto.randomUUID(),
+		Origin: 'https://3d.hunyuan.tencent.com',
+		Referer: 'https://3d.hunyuan.tencent.com/'
 	}
 }
 
@@ -68,28 +71,19 @@ export default class HyApi {
 		params.enableLowPoly = params.enableLowPoly ?? false
 		params.faceCount = params.faceCount ?? 1500000
 
-		const timestamp = Math.floor(Date.now() / 1000)
-		const nonce = Math.random().toString(36).substring(2, 18) // we can't bypass this X(
-		const sign = Math.random().toString(36).substring(2, 34) // we can't bypass this x(
+		// Sign only timestamp+nonce (matches site request interceptor behavior)
+		const { sign, timestamp, nonce } = hunyuanSign({})
 		const url = `https://3d.hunyuan.tencent.com/api/3d/creations/generations?timestamp=${timestamp}&nonce=${nonce}&sign=${sign}`
-		console.log('Generating 3D model with URL:', url)
 		const headers = await makeHeaders(this.context)
 		console.log('Generating 3D model with params:', params)
 		const response = await fetch(url, { method: 'POST', headers, body: JSON.stringify(params) })
-		console.log('Response:', response)
-
-		const reader = response.body?.getReader()
-		let result = ''
-		while (reader) {
-			const { done, value } = await reader.read()
-			if (done) break
-			result += new TextDecoder().decode(value)
-		}
-		// {"id":"b972aad701d9c5a4903cc82a80510dbc","error":"参数不完整","message":"请求异常，签名验证失败:参数不完整"}
-		console.log('Response body:', result)
-
 		if (!response.ok) throw new Error(`Failed to generate 3D model: ${response.status}`)
-		return response.json()
+		try {
+			return await response.json()
+		} catch {
+			const text = await response.text()
+			return { ok: response.ok, status: response.status, body: text }
+		}
 	}
 
 	static async getCreationDetails(creationsId: string): Promise<any> {
@@ -108,3 +102,66 @@ export default class HyApi {
 		return response.json()
 	}
 }
+
+// --- Hunyuan 3D signature algorithm (reverse-engineered) ---
+
+// These constants are from the site bundle (Uint8Array/number[])
+const P = new Uint8Array([122,59,92,165,30,79,166,139,142,129,139,89,219,131,101,204])
+const F = new Uint8Array([122,59,92,45,30,79,106,139,156,13,46,63,74,91,108,125])
+const E = [3,5,2,7,1,4,6,2,5,3,1,4,2,6,3,5]
+const Y = [14,11,13,9,15,10,12,8,6,3,5,1,7,2,4,0]
+
+function rotateLeft(byte: number, bits: number): number {
+  return ((byte << bits) | (byte >>> (8 - bits))) & 0xff
+}
+
+function deriveSecret(): string {
+  // Step 1: XOR P and F
+  const t = new Uint8Array(16)
+  for (let i = 0; i < 16; i++) t[i] = P[i] ^ F[i]
+  // Step 2: rotate each by E[i]
+  const n = new Uint8Array(16)
+  for (let i = 0; i < 16; i++) n[i] = rotateLeft(t[i], E[i])
+  // Step 3: reorder by Y
+  const r = new Uint8Array(16)
+  for (let i = 0; i < 16; i++) r[i] = n[Y[i]]
+  // Step 4: decode as UTF-8 up to first zero byte
+  let end = r.indexOf(0)
+  if (end === -1) end = 16
+  return new TextDecoder().decode(r.slice(0, end))
+}
+
+function buildQueryString(params: Record<string, any>): string {
+  // Filter out null/undefined/empty, convert to string, sort by key
+  return Object.entries(params)
+    .filter(([, v]) => v !== undefined && v !== null && v !== '')
+    .map(([k, v]) => [k, String(v)])
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([k, v]) => `${k}=${v}`)
+    .join('&')
+}
+
+function randomNonce(length = 16): string {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  let out = ''
+  for (let i = 0; i < length; i++) out += chars.charAt(Math.floor(Math.random() * chars.length))
+  return out
+}
+
+/**
+ * Generates the Hunyuan 3D API sign, timestamp, and nonce.
+ * @param params The request params (body or query) as a flat object.
+ * @returns { sign, timestamp, nonce }
+ */
+export function hunyuanSign(params: Record<string, any>) {
+  const timestamp = Math.floor(Date.now() / 1000)
+  const nonce = randomNonce(16)
+  const base = { ...params, timestamp, nonce }
+  const qs = buildQueryString(base)
+  const secret = deriveSecret()
+  const h = createHmac('sha256', secret)
+  h.update(qs)
+  const sign = h.digest('hex')
+  return { sign, timestamp, nonce }
+}
+// --- End signature code ---
