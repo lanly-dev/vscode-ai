@@ -1,7 +1,7 @@
 {
   "name": "ai",
   "displayName": "ai",
-  "description": "ai",
+  "description": "Something related to AI",
   "version": "0.0.1",
   "publisher": "lanly-dev",
   "engines": {
@@ -15,49 +15,49 @@
   "contributes": {
     "commands": [
       {
-        "command": "ai.loginWebsite",
+        "command": "hy.loginWebsite",
         "title": "Hunyuan 3D Login",
         "icon": "$(link)",
         "category": "AI"
       },
       {
-        "command": "ai.loggingIn",
+        "command": "hy.loggingIn",
         "title": "Hunyuan 3D Logging In...",
         "icon": "$(key)",
         "category": "AI"
       },
       {
-        "command": "ai.getConfig",
+        "command": "hy.getConfig",
         "title": "Get Hunyuan Config",
         "icon": "$(settings)",
         "category": "AI"
       },
       {
-        "command": "ai.getUserInfo",
+        "command": "hy.getUserInfo",
         "title": "Get User Info",
         "icon": "$(user)",
         "category": "AI"
       },
       {
-        "command": "ai.getQuotaInfo",
+        "command": "hy.getQuotaInfo",
         "title": "Get Quota Info",
         "icon": "$(gear)",
         "category": "AI"
       },
       {
-        "command": "ai.generate3DModel",
+        "command": "hy.generate3DModel",
         "title": "Generate 3D Model",
         "icon": "$(rocket)",
         "category": "AI"
       },
       {
-        "command": "ai.getCreationDetails",
+        "command": "hy.getCreationDetails",
         "title": "Get Creation Details",
         "icon": "$(file-code)",
         "category": "AI"
       },
       {
-        "command": "ai.listCreations",
+        "command": "hy.listCreations",
         "title": "List Creations",
         "icon": "$(list-unordered)",
         "category": "AI"
@@ -66,7 +66,7 @@
     "views": {
       "explorer": [
         {
-          "id": "aiTreeView",
+          "id": "hyTreeView",
           "name": "AI",
           "icon": "$(rocket)"
         }
@@ -75,13 +75,13 @@
     "menus": {
       "view/item/context": [
         {
-          "command": "ai.loginWebsite",
-          "when": "viewItem == ai.notLoggedIn",
+          "command": "hy.loginWebsite",
+          "when": "viewItem == hy.notLoggedIn",
           "group": "inline"
         },
         {
-          "command": "ai.loggingIn",
-          "when": "viewItem == ai.notLoggedIn",
+          "command": "hy.loggingIn",
+          "when": "viewItem == hy.notLoggedIn",
           "group": "inline"
         }
       ]

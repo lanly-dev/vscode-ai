@@ -6,15 +6,8 @@ export function activate(context: vscode.ExtensionContext) {
 	HyLogin.setContext(context)
 	HyApi.setContext(context)
 
-	const dWebview = vscode.commands.registerCommand('ai.loginWebsite', () => {
-		const panel = vscode.window.createWebviewPanel(
-			'hunyuanLogin',
-			'Hunyuan Login',
-			vscode.ViewColumn.One,
-			{
-				enableScripts: true
-			}
-		)
+	const dWebview = vscode.commands.registerCommand('hy.loginWebsite', () => {
+		const panel = vscode.window.createWebviewPanel('hunyuanLogin', 'Hunyuan Login', vscode.ViewColumn.One, { enableScripts: true })
 		panel.webview.html = `
 			<!DOCTYPE html>
 			<html lang="en">
@@ -32,13 +25,10 @@ export function activate(context: vscode.ExtensionContext) {
 	})
 
 	// Register the TreeView
-	const dTreeView = vscode.window.createTreeView('aiTreeView', {
-		treeDataProvider: new StatusTreeDataProvider(),
-		showCollapseAll: false
-	})
+	const dTreeView = vscode.window.createTreeView('hyTreeView', { treeDataProvider: new StatusTreeDataProvider(), showCollapseAll: false })
 
 	// Command to prompt user for email and code
-	const dLoggingIn = vscode.commands.registerCommand('ai.loggingIn', async () => {
+	const dLoggingIn = vscode.commands.registerCommand('hy.loggingIn', async () => {
 		const email = await vscode.window.showInputBox({
 			prompt: 'Enter your email for Hunyuan 3D',
 			placeHolder: 'your@email.com',

@@ -61,7 +61,7 @@ export default class HyApi {
 		faceCount?: number
 	}): Promise<any> {
 
-		// Style can be empty|cartoon
+		// Style can be empty string|cartoon
 		// modelType can be modelCreationV3.0|geometryV3.0
 		// faceCount 500000 to 15000000
 		params.sceneType = params.sceneType ?? 'playGround3D-2.0'
