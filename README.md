@@ -1,4 +1,6 @@
-# ai README
+# Hunyuan README
+
+> DEAD END 🪦: It looks like they add sign into `/generations` to prevent calling it outside the web app
 
 This is the README for your extension "ai". After writing up a brief description, we recommend including the following sections.
 
