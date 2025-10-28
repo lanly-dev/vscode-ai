@@ -55,10 +55,9 @@ export default class HyLogin {
         // console.log('Response body:', result)
 
         if (neededCookie) {
+          await this.context.secrets.store('HY-EMAIL', email)
           await this.context.secrets.store('hunyuan3d-cookie', neededCookie)
-          console.log('✅ Cookie stored in SecretStorage:', neededCookie)
         } else console.warn('No valid cookie found in response')
-        console.log(`✅ Login successful for ${email}.`)
         return true
 
       } else {

@@ -25,7 +25,8 @@ export function activate(context: vscode.ExtensionContext) {
 	})
 
 	// Register the TreeView
-	const dTreeView = vscode.window.createTreeView('hyTreeView', { treeDataProvider: new StatusTreeDataProvider(), showCollapseAll: false })
+	const treeDataProvider = new StatusTreeDataProvider(context)
+	const dTreeView = vscode.window.createTreeView('hyTreeView', { treeDataProvider, showCollapseAll: false })
 
 	// Command to prompt user for email and code
 	const dLoggingIn = vscode.commands.registerCommand('hy.loggingIn', async () => {
@@ -38,6 +39,7 @@ export function activate(context: vscode.ExtensionContext) {
 					: null
 		})
 		if (!email) return
+
 		const code = await vscode.window.showInputBox({
 			prompt: 'Enter the verification code sent to your email',
 			placeHolder: '123456',
@@ -48,8 +50,18 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 		if (!code) return
 		const success = await HyLogin.loginWithEmail(email, code)
-		if (success) vscode.window.showInformationMessage('✅ Hunyuan 3D Login successful!')
+		if (success) {
+			treeDataProvider.refresh()
+			vscode.window.showInformationMessage('✅ Hunyuan 3D Login successful!')
+		}
 		else vscode.window.showErrorMessage('❌ Hunyuan 3D Login failed. Please check your email and code.')
+	})
+
+	const dLogout = vscode.commands.registerCommand('hy.loggingOut', async () => {
+		await context.secrets.delete('hunyuan3d-cookie')
+		await context.secrets.delete('HY-EMAIL')
+		vscode.window.showInformationMessage('✅ Logged out from Hunyuan 3D successfully!')
+		treeDataProvider.refresh()
 	})
 
 	const d1 = vscode.commands.registerCommand('ai.getConfig', async () => {
@@ -115,7 +127,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	})
 
-	context.subscriptions.push(dWebview, dLoggingIn, dTreeView, d1, d2, d3, d4, d5, d6)
+	context.subscriptions.push(dWebview, dLoggingIn, dLogout, dTreeView, d1, d2, d3, d4, d5, d6)
 }
 
 // This method is called when your extension is deactivated

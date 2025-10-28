@@ -16,14 +16,20 @@
     "commands": [
       {
         "command": "hy.loginWebsite",
-        "title": "Hunyuan 3D Login",
+        "title": "Hunyuan 3D Login Website",
         "icon": "$(link)",
         "category": "AI"
       },
       {
         "command": "hy.loggingIn",
-        "title": "Hunyuan 3D Logging In...",
+        "title": "Hunyuan 3D Login",
         "icon": "$(key)",
+        "category": "AI"
+      },
+      {
+        "command": "hy.loggingOut",
+        "title": "Hunyuan 3D Logout",
+        "icon": "$(export)",
         "category": "AI"
       },
       {
@@ -76,12 +82,17 @@
       "view/item/context": [
         {
           "command": "hy.loginWebsite",
-          "when": "viewItem == hy.notLoggedIn",
+          "when": "viewItem == HY-NOT-LOGGED-IN",
           "group": "inline"
         },
         {
           "command": "hy.loggingIn",
-          "when": "viewItem == hy.notLoggedIn",
+          "when": "viewItem == HY-NOT-LOGGED-IN",
+          "group": "inline"
+        },
+        {
+          "command": "hy.loggingOut",
+          "when": "viewItem == HY-LOGGED-IN",
           "group": "inline"
         }
       ]
